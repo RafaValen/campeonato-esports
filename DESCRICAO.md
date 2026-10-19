@@ -1,7 +1,10 @@
-Descrição do sistema
+## Descrição do sistema
 
-Escreva este arquivo sem IA, antes de qualquer código. Apague as instruções
-em itálico quando preencher.
+O Gerenciador de Campeonatos de Esports é um sistema desenvolvido em C++11 que permite cadastrar times, registrar resultados de partidas MD3 (melhor de três), consultar o histórico dos confrontos e visualizar a classificação das equipes com base em suas vitórias e critérios de desempate.
+
+**Uma frase dizendo o que o sistema faz:**
+
+O sistema organiza campeonatos de esports, registrando partidas e resultados para gerar a classificação dos times.
 
 ## Nome e ideia
 
