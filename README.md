@@ -79,19 +79,18 @@ cmd /c "sistema.exe < exemplos\fim_entrada.txt"
 
 ## Onde uso a STL
 
-Escreva esta seção sem IA. Para cada container ou algoritmo da STL que o
-sistema usa: em que classe ele está, o que guarda, e por que você escolheu
-ele e não outro.
+No projeto, utilizei quatro ferramentas da STL:
 
-| Onde | O quê | Por quê |
-| --- | --- | --- |
-| | | |
+- **map:** para armazenar os times e acessar seus dados pesquisando pelo nome.
+- **set:** para garantir que não haja repetição de confrontos entre os mesmos times.
+- **vector:** para armazenar as partidas e organizar os dados usados nas consultas de histórico e classificação.
+- **sort:** para ordenar os times na classificação do campeonato, considerando as vitórias, o saldo de jogos e os critérios de desempate.
 
 ## Como usei a IA
 
 Escreva com as suas palavras:
 
-- Modelo usado:
-- Um pedido que deu certo, e por que você acha que deu certo:
-- Um pedido que deu errado, o que veio errado e como você mudou o pedido:
-- Uma coisa que a IA sugeriu e você recusou, e por quê:
+- Modelo usado: GPT 6.1 Sol (OpenCode)
+- Um pedido que deu certo, e por que você acha que deu certo: Implementar a classificação do campeonato utilizando std::sort e operator<. Acredito que deu certo porque o pedido especificava os critérios de classificação, os arquivos que deveriam ser alterados e os testes necessários. A implementação compilou e passou nos testes.
+- Um pedido que deu errado, o que veio errado e como você mudou o pedido:  Quando pedi ao OpenCode para criar o planejamento, ele apresentou o conteúdo, mas não criou diretamente o arquivo PLANO.md, porque havia uma instrução no projeto impedindo a edição de arquivos durante pedidos de planejamento. Para resolver, copiei o planejamento gerado e coloquei manualmente no arquivo.
+- Uma coisa que a IA sugeriu e você recusou, e por quê: Durante o desenvolvimento, mantive a decisão de não adicionar funcionalidades além das previstas no planejamento, como interface gráfica ou armazenamento permanente dos resultados. Preferi manter o programa no terminal, com foco nos requisitos da atividade e na utilização da STL.
