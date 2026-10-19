@@ -251,5 +251,85 @@ int main() {
     assert(md3.registrarPartida(" gamma ", " ALPHA ", 2, 0) == CONFRONTO_REPETIDO);
     std::cout << "Os quatro placares validos foram aceitos; estatisticas acumuladas corretas.\n";
     std::cout << "Todos os testes da etapa 4 passaram.\n";
+
+    const std::vector<Time> timesAntesDoHistorico = consultaMD3.listarTimes();
+    const std::vector<Partida> partidasAntesDoHistorico = consultaMD3.listarPartidas();
+    std::vector<Partida> historico;
+    assert(consultaMD3.historicoTime("  aLpHa  ", historico));
+    assert(historico.size() == 3);
+    const int indicesAlpha[] = {0, 1, 3};
+    std::cout << "Historico de Alpha (consulta com espacos e letras mistas):\n";
+    for (int i = 0; i < 3; ++i) {
+        const Partida& esperada = partidasAntesDoHistorico[indicesAlpha[i]];
+        assert(historico[i].getChaveTimeA() == esperada.getChaveTimeA());
+        assert(historico[i].getChaveTimeB() == esperada.getChaveTimeB());
+        assert(historico[i].getJogosA() == esperada.getJogosA());
+        assert(historico[i].getJogosB() == esperada.getJogosB());
+        assert(historico[i].envolveTime("alpha"));
+        std::cout << historico[i].getChaveTimeA() << ' ' << historico[i].getJogosA()
+                  << 'x' << historico[i].getJogosB() << ' '
+                  << historico[i].getChaveTimeB() << '\n';
+    }
+
+    // Reutiliza a saida: nao deve acumular resultados da consulta anterior.
+    assert(consultaMD3.historicoTime(" GAMMA ", historico));
+    assert(historico.size() == 2);
+    for (int i = 0; i < 2; ++i) {
+        const Partida& esperada = partidasAntesDoHistorico[i + 1];
+        assert(historico[i].getChaveTimeA() == esperada.getChaveTimeA());
+        assert(historico[i].getChaveTimeB() == "gamma");
+        assert(historico[i].getJogosA() == esperada.getJogosA());
+        assert(historico[i].getJogosB() == esperada.getJogosB());
+    }
+    std::cout << "Gamma: duas partidas encontradas como segundo participante.\n";
+
+    assert(consulta.historicoTime(" ALPHA ", historico));
+    assert(historico.empty());
+    std::cout << "Time cadastrado sem partidas: retorno true e historico vazio.\n";
+
+    historico = partidasAntesDoHistorico;
+    assert(!consultaMD3.historicoTime(" Inexistente ", historico));
+    assert(historico.empty());
+    assert(!consultaMD3.historicoTime("", historico));
+    assert(historico.empty());
+    assert(!consultaMD3.historicoTime("   ", historico));
+    assert(historico.empty());
+    Campeonato campeonatoSemTimes;
+    assert(!campeonatoSemTimes.historicoTime("Alpha", historico));
+    assert(historico.empty());
+    assert(campeonatoSemTimes.listarTimes().empty());
+    std::cout << "Time inexistente: retorno false e historico vazio.\n";
+
+    // Alterar as copias retornadas nao pode afetar o campeonato.
+    assert(consultaMD3.historicoTime("Alpha", historico));
+    historico[0] = Partida("outro", "time", 2, 0);
+    historico.clear();
+    assert(consultaMD3.historicoTime("Alpha", historico));
+    assert(historico.size() == 3);
+    assert(historico[0].getChaveTimeA() == "alpha");
+    assert(historico[0].getChaveTimeB() == "beta");
+    assert(historico[0].getJogosA() == 2);
+    assert(historico[0].getJogosB() == 1);
+
+    const std::vector<Time> timesDepoisDoHistorico = consultaMD3.listarTimes();
+    assert(timesDepoisDoHistorico.size() == timesAntesDoHistorico.size());
+    for (std::vector<Time>::size_type i = 0; i < timesAntesDoHistorico.size(); ++i) {
+        assert(timesDepoisDoHistorico[i].getNome() == timesAntesDoHistorico[i].getNome());
+        assert(timesDepoisDoHistorico[i].getChave() == timesAntesDoHistorico[i].getChave());
+        assert(timesDepoisDoHistorico[i].getVitoriasMD3() == timesAntesDoHistorico[i].getVitoriasMD3());
+        assert(timesDepoisDoHistorico[i].getDerrotasMD3() == timesAntesDoHistorico[i].getDerrotasMD3());
+        assert(timesDepoisDoHistorico[i].getJogosGanhos() == timesAntesDoHistorico[i].getJogosGanhos());
+        assert(timesDepoisDoHistorico[i].getJogosPerdidos() == timesAntesDoHistorico[i].getJogosPerdidos());
+    }
+    const std::vector<Partida> partidasDepoisDoHistorico = consultaMD3.listarPartidas();
+    assert(partidasDepoisDoHistorico.size() == partidasAntesDoHistorico.size());
+    for (std::vector<Partida>::size_type i = 0; i < partidasAntesDoHistorico.size(); ++i) {
+        assert(partidasDepoisDoHistorico[i].getChaveTimeA() == partidasAntesDoHistorico[i].getChaveTimeA());
+        assert(partidasDepoisDoHistorico[i].getChaveTimeB() == partidasAntesDoHistorico[i].getChaveTimeB());
+        assert(partidasDepoisDoHistorico[i].getJogosA() == partidasAntesDoHistorico[i].getJogosA());
+        assert(partidasDepoisDoHistorico[i].getJogosB() == partidasAntesDoHistorico[i].getJogosB());
+    }
+    std::cout << "Historicos preservam a ordem; consultas e alteracoes das copias nao mudam os dados.\n";
+    std::cout << "Todos os testes da etapa 5 passaram.\n";
     return 0;
 }

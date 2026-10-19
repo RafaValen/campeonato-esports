@@ -43,6 +43,12 @@ public:
                                        int jogosA, int jogosB);
     // Retorna copias na ordem de registro.
     std::vector<Partida> listarPartidas() const;
+
+    // Substitui a saida por copias em ordem de registro.
+    // Retorna false para time inexistente e deixa a saida vazia.
+    // Retorna true para time cadastrado, mesmo que nao tenha partidas.
+    bool historicoTime(const std::string& nome,
+                       std::vector<Partida>& partidasEncontradas) const;
 };
 
 #endif

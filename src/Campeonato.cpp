@@ -96,3 +96,20 @@ ResultadoRegistro Campeonato::registrarPartida(const std::string& nomeA,
 std::vector<Partida> Campeonato::listarPartidas() const {
     return partidas;
 }
+
+bool Campeonato::historicoTime(const std::string& nome,
+                              std::vector<Partida>& partidasEncontradas) const {
+    const std::string chave = padronizarNome(nome);
+    partidasEncontradas.clear();
+    if (times.find(chave) == times.end()) {
+        return false;
+    }
+
+    for (std::vector<Partida>::const_iterator it = partidas.begin();
+         it != partidas.end(); ++it) {
+        if (it->envolveTime(chave)) {
+            partidasEncontradas.push_back(*it);
+        }
+    }
+    return true;
+}
