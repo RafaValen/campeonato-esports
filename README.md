@@ -22,9 +22,10 @@ Uma frase dizendo o que o sistema faz. A descrição completa está em
 
 ## Compilar e executar
 
-Na etapa 1, `src/*.cpp` inclui `src/Time.cpp` e `src/main.cpp`.
-O executável roda testes com `assert` e mostra as estatísticas de Alpha
-antes e depois de vencer uma MD3 por 2x1.
+Na etapa 2, `src/*.cpp` inclui `src/Time.cpp`, `src/Partida.cpp` e `src/main.cpp`.
+O executável mantém os testes da etapa 1 com `assert` e mostra as estatísticas
+de Alpha antes e depois de vencer uma MD3 por 2x1. Também testa as consultas
+de `Partida`, os participantes e os placares permitidos e inválidos.
 
 ```bash
 g++ -std=c++11 -Wall -Wextra src/*.cpp -Iinclude -o sistema

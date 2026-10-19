@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "Time.hpp"
+#include "Partida.hpp"
 
 int main() {
     Time alpha("Alpha", "alpha");
@@ -46,5 +47,36 @@ int main() {
     assert(beta.saldoJogos() == 0);
 
     std::cout << "Todos os testes da etapa 1 passaram.\n";
+
+    assert(Partida::placarValido(2, 0));
+    assert(Partida::placarValido(2, 1));
+    assert(Partida::placarValido(0, 2));
+    assert(Partida::placarValido(1, 2));
+    std::cout << "Placares aceitos: 2x0, 2x1, 0x2 e 1x2.\n";
+
+    assert(!Partida::placarValido(3, 0));
+    assert(!Partida::placarValido(0, 3));
+    assert(!Partida::placarValido(1, 1));
+    assert(!Partida::placarValido(0, 0));
+    assert(!Partida::placarValido(2, 2));
+    assert(!Partida::placarValido(-1, 2));
+    assert(!Partida::placarValido(2, -1));
+    assert(!Partida::placarValido(-1, -1));
+    std::cout << "Placares rejeitados: 3x0, 0x3, 1x1, 0x0, 2x2, "
+              << "-1x2, 2x-1 e -1x-1.\n";
+
+    const Partida partida(alpha.getChave(), beta.getChave(), 2, 1);
+    assert(partida.getChaveTimeA() == "alpha");
+    assert(partida.getChaveTimeB() == "beta");
+    assert(partida.getJogosA() == 2);
+    assert(partida.getJogosB() == 1);
+    assert(partida.envolveTime("alpha"));
+    assert(partida.envolveTime("beta"));
+    assert(!partida.envolveTime("gamma"));
+    std::cout << "Partida: " << partida.getChaveTimeA() << " x "
+              << partida.getChaveTimeB() << ", placar "
+              << partida.getJogosA() << 'x' << partida.getJogosB() << '\n';
+    std::cout << "envolveTime: alpha e beta participam; gamma nao participa.\n";
+    std::cout << "Todos os testes da etapa 2 passaram.\n";
     return 0;
 }
