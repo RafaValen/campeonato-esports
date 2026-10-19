@@ -2,13 +2,11 @@
 
 O Gerenciador de Campeonatos de Esports é um sistema desenvolvido em C++11 que permite cadastrar times, registrar resultados de partidas MD3 (melhor de três), consultar o histórico dos confrontos e visualizar a classificação das equipes com base em suas vitórias e critérios de desempate.
 
-**Uma frase dizendo o que o sistema faz:**
-
 O sistema organiza campeonatos de esports, registrando partidas e resultados para gerar a classificação dos times.
 
 ## Nome e ideia
 
-O sistema vai se chamar Gerenciador de Campeonatos de Esports. A ideia é ajudar a organizar campeonatos de jogos competitivos, tipo Honor of Kings, cadastrando times, resultados das partidas e mostrando a classificação. É mais voltado pra quem organiza esses campeonatos
+O sistema vai se chamar Gerenciador de Campeonatos de Esports. A ideia é ajudar a organizar campeonatos de jogos competitivos, tipo Honor of Kings, cadastrando times, resultados das partidas e mostrando a classificação. É mais voltado pra quem organiza esses campeonatos.
 
 ## O que o sistema guarda
 
@@ -48,6 +46,14 @@ Se continuar empatado, fica na frente quem tiver mais jogos vencidos.
 Se ainda empatar, vai pela ordem alfabética.
 
 Não pode ter dois times com o mesmo nome, mesmo usando letras maiúsculas ou minúsculas.
+
+Ao cadastrar um time, o sistema remove os espaços que estiverem no começo ou no final do nome.
+
+Não é permitido cadastrar um time com o nome vazio ou contendo apenas espaços.
+
+Na comparação dos nomes, o sistema ignora a diferença entre letras maiúsculas e minúsculas de A a Z. Por exemplo, LOUD e loud são considerados o mesmo time.
+
+Os espaços no meio do nome são mantidos, e o sistema não faz tratamento especial para letras com acentos.
 
 Um time não pode jogar contra ele mesmo.
 

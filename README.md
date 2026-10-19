@@ -82,9 +82,9 @@ cmd /c "sistema.exe < exemplos\fim_entrada.txt"
 
 No projeto, utilizei quatro ferramentas da STL:
 
-- **map:** : Classe Campeonato , no cadastro e consulta ; Para armazenar os times e acessar seus dados pesquisando pelo nome.
- - **set:**  Classe Campeonato, em registrarPartida() ; Para garantir que não haja repetição de confrontos entre os mesmos times.
- - **vector:**  Classe Campeonato, em listarPartidas(), historicoTime() e classificacao() ; Para armazenar as partidas e organizar os dados usados nas consultas de histórico e classificação. 
+- **map:** : Classe Campeonato , no cadastro e consulta ; Para armazenar os times e acessar seus dados pesquisando pelo nome ; Escolhi usar o map porque ele permite encontrar os dados de um time pelo nome, sem precisar percorrer uma lista inteira como aconteceria com um vector.
+ - **set:**  Classe Campeonato, em registrarPartida() ; Para garantir que não haja repetição de confrontos entre os mesmos times ; Usei o set para controlar os confrontos já realizados, porque ele não permite elementos repetidos. Assim, fica mais fácil impedir que dois times se enfrentem novamente.
+ - **vector:**  Classe Campeonato, em listarPartidas(), historicoTime() e classificacao() ; Para armazenar as partidas e organizar os dados usados nas consultas de histórico e classificação ; Escolhi o vector para armazenar as partidas porque precisava manter uma sequência de resultados e percorrê-la para consultar os históricos. Também usei um vector de times para montar a classificação, pois ele pode ser ordenado com o sort.
 - **sort:** Método Campeonato::classificacao() ; Para ordenar os times na classificação do campeonato, considerando as vitórias, o saldo de jogos e os critérios de desempate.
 
 ## Como usei a IA
