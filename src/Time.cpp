@@ -33,6 +33,19 @@ int Time::saldoJogos() const {
     return jogosGanhos - jogosPerdidos;
 }
 
+bool Time::operator<(const Time& outro) const {
+    if (vitoriasMD3 != outro.vitoriasMD3) {
+        return vitoriasMD3 > outro.vitoriasMD3;
+    }
+    if (saldoJogos() != outro.saldoJogos()) {
+        return saldoJogos() > outro.saldoJogos();
+    }
+    if (jogosGanhos != outro.jogosGanhos) {
+        return jogosGanhos > outro.jogosGanhos;
+    }
+    return chave < outro.chave;
+}
+
 void Time::registrarResultado(int ganhos, int perdidos) {
     jogosGanhos += ganhos;
     jogosPerdidos += perdidos;

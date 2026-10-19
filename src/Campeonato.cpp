@@ -1,5 +1,6 @@
 #include "Campeonato.hpp"
 
+#include <algorithm>
 #include <utility>
 
 std::pair<std::string, std::string> Campeonato::montarChaveConfronto(
@@ -59,6 +60,12 @@ std::vector<Time> Campeonato::listarTimes() const {
         lista.push_back(it->second);
     }
     return lista;
+}
+
+std::vector<Time> Campeonato::classificacao() const {
+    std::vector<Time> tabela = listarTimes();
+    std::sort(tabela.begin(), tabela.end());
+    return tabela;
 }
 
 ResultadoRegistro Campeonato::registrarPartida(const std::string& nomeA,

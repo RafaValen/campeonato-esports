@@ -36,6 +36,8 @@ public:
     bool consultarTime(const std::string& nome, Time& timeEncontrado) const;
     // Retorna copias em ordem de chave, nao em ordem de classificacao.
     std::vector<Time> listarTimes() const;
+    // Ordena apenas copias dos times pelos criterios de Time::operator<.
+    std::vector<Time> classificacao() const;
 
     // Valida times, confronto consigo mesmo, placar e repeticao, nessa ordem.
     ResultadoRegistro registrarPartida(const std::string& nomeA,

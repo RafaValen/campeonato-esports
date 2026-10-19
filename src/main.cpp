@@ -1,4 +1,5 @@
 #include <cassert>
+#include <algorithm>
 #include <iostream>
 
 #include "Time.hpp"
@@ -331,5 +332,145 @@ int main() {
     }
     std::cout << "Historicos preservam a ordem; consultas e alteracoes das copias nao mudam os dados.\n";
     std::cout << "Todos os testes da etapa 5 passaram.\n";
+
+    assert(campeonatoSemTimes.classificacao().empty());
+    std::cout << "Classificacao de campeonato vazio: vetor vazio.\n";
+
+    Campeonato semPartidas;
+    assert(semPartidas.cadastrarTime("Zulu"));
+    assert(semPartidas.cadastrarTime(" BETA "));
+    assert(semPartidas.cadastrarTime("alpha"));
+    std::vector<Time> tabela = semPartidas.classificacao();
+    assert(tabela.size() == 3);
+    assert(tabela[0].getNome() == "alpha");
+    assert(tabela[1].getNome() == "BETA");
+    assert(tabela[2].getNome() == "Zulu");
+    for (std::vector<Time>::size_type i = 0; i < tabela.size(); ++i) {
+        assert(tabela[i].getVitoriasMD3() == 0);
+        assert(tabela[i].getDerrotasMD3() == 0);
+        assert(tabela[i].getJogosGanhos() == 0);
+        assert(tabela[i].getJogosPerdidos() == 0);
+        assert(tabela[i].saldoJogos() == 0);
+    }
+    std::cout << "Times sem partidas: alpha, BETA, Zulu (nome normalizado).\n";
+
+    // Casos isolados: os criterios seguintes favorecem Alpha, mas Zulu
+    // deve vencer pelo criterio que esta sendo testado.
+    {
+        Time maisVitorias("Zulu", "zulu");
+        maisVitorias.registrarResultado(2, 1);
+        maisVitorias.registrarResultado(2, 1);
+        maisVitorias.registrarResultado(0, 2);
+        maisVitorias.registrarResultado(0, 2);
+        Time menosVitorias("Alpha", "alpha");
+        menosVitorias.registrarResultado(2, 0);
+        std::vector<Time> porVitorias;
+        porVitorias.push_back(menosVitorias);
+        porVitorias.push_back(maisVitorias);
+        std::sort(porVitorias.begin(), porVitorias.end());
+        assert(porVitorias[0].getChave() == "zulu");
+        assert(porVitorias[0].getVitoriasMD3() == 2);
+        assert(porVitorias[1].getVitoriasMD3() == 1);
+        assert(maisVitorias < menosVitorias);
+        assert(!(menosVitorias < maisVitorias));
+        std::cout << "Vitorias: Zulu (2 MD3, saldo -2) antes de Alpha (1 MD3, saldo +2).\n";
+    }
+    {
+        Time maiorSaldo("Zulu", "zulu");
+        maiorSaldo.registrarResultado(2, 0);
+        Time menorSaldo("Alpha", "alpha");
+        menorSaldo.registrarResultado(2, 1);
+        menorSaldo.registrarResultado(1, 2);
+        std::vector<Time> porSaldo;
+        porSaldo.push_back(menorSaldo);
+        porSaldo.push_back(maiorSaldo);
+        std::sort(porSaldo.begin(), porSaldo.end());
+        assert(porSaldo[0].getChave() == "zulu");
+        assert(porSaldo[0].getVitoriasMD3() == porSaldo[1].getVitoriasMD3());
+        assert(porSaldo[0].saldoJogos() == 2);
+        assert(porSaldo[1].saldoJogos() == 0);
+        assert(maiorSaldo < menorSaldo);
+        assert(!(menorSaldo < maiorSaldo));
+        std::cout << "Saldo: Zulu (+2, 2 jogos ganhos) antes de Alpha (0, 3 jogos ganhos).\n";
+    }
+    {
+        Time maisJogos("Zulu", "zulu");
+        maisJogos.registrarResultado(2, 0);
+        maisJogos.registrarResultado(1, 2);
+        Time menosJogos("Alpha", "alpha");
+        menosJogos.registrarResultado(2, 1);
+        std::vector<Time> porJogos;
+        porJogos.push_back(menosJogos);
+        porJogos.push_back(maisJogos);
+        std::sort(porJogos.begin(), porJogos.end());
+        assert(porJogos[0].getChave() == "zulu");
+        assert(porJogos[0].getVitoriasMD3() == porJogos[1].getVitoriasMD3());
+        assert(porJogos[0].saldoJogos() == porJogos[1].saldoJogos());
+        assert(porJogos[0].getJogosGanhos() == 3);
+        assert(porJogos[1].getJogosGanhos() == 2);
+        assert(maisJogos < menosJogos);
+        assert(!(menosJogos < maisJogos));
+        std::cout << "Jogos ganhos: Zulu (3) antes de Alpha (2), ambos com 1 MD3 e saldo +1.\n";
+    }
+    {
+        Time nomeAlpha("alpha", "alpha");
+        Time nomeBeta("BETA", "beta");
+        nomeAlpha.registrarResultado(2, 1);
+        nomeBeta.registrarResultado(2, 1);
+        std::vector<Time> porNome;
+        porNome.push_back(nomeBeta);
+        porNome.push_back(nomeAlpha);
+        std::sort(porNome.begin(), porNome.end());
+        assert(porNome[0].getChave() == "alpha");
+        assert(porNome[1].getChave() == "beta");
+        assert(nomeAlpha < nomeBeta);
+        assert(!(nomeBeta < nomeAlpha));
+        assert(!(nomeAlpha < nomeAlpha));
+        const Time copiaAlpha = nomeAlpha;
+        assert(!(nomeAlpha < copiaAlpha));
+        assert(!(copiaAlpha < nomeAlpha));
+        std::cout << "Nome: alpha antes de BETA quando todas as estatisticas empatam.\n";
+    }
+
+    const std::vector<Time> timesAntesDaClassificacao = consultaMD3.listarTimes();
+    tabela = consultaMD3.classificacao();
+    const char* ordemEsperada[] = {"gamma", "alpha", "beta", "delta"};
+    assert(tabela.size() == 4);
+    std::cout << "Classificacao do campeonato MD3:\n";
+    for (int i = 0; i < 4; ++i) {
+        assert(tabela[i].getChave() == ordemEsperada[i]);
+        assert(consultaMD3.consultarTime(ordemEsperada[i], encontrado));
+        assert(tabela[i].getNome() == encontrado.getNome());
+        assert(tabela[i].getVitoriasMD3() == encontrado.getVitoriasMD3());
+        assert(tabela[i].getDerrotasMD3() == encontrado.getDerrotasMD3());
+        assert(tabela[i].getJogosGanhos() == encontrado.getJogosGanhos());
+        assert(tabela[i].getJogosPerdidos() == encontrado.getJogosPerdidos());
+        std::cout << i + 1 << ". " << tabela[i].getNome()
+                  << " | MD3 vencidas=" << tabela[i].getVitoriasMD3()
+                  << " | saldo=" << tabela[i].saldoJogos()
+                  << " | jogos ganhos=" << tabela[i].getJogosGanhos() << '\n';
+    }
+    // A tabela e uma copia: alterar ou limpar seus elementos nao muda o map.
+    tabela[0].registrarResultado(2, 0);
+    tabela.clear();
+    tabela = consultaMD3.classificacao();
+    assert(tabela.size() == 4);
+    assert(tabela[0].getChave() == "gamma");
+    assert(tabela[0].getVitoriasMD3() == 2);
+    const std::vector<Time> timesDepoisDaClassificacao = consultaMD3.listarTimes();
+    assert(timesDepoisDaClassificacao.size() == timesAntesDaClassificacao.size());
+    for (std::vector<Time>::size_type i = 0; i < timesAntesDaClassificacao.size(); ++i) {
+        const Time& antes = timesAntesDaClassificacao[i];
+        const Time& depois = timesDepoisDaClassificacao[i];
+        assert(depois.getNome() == antes.getNome());
+        assert(depois.getChave() == antes.getChave());
+        assert(depois.getVitoriasMD3() == antes.getVitoriasMD3());
+        assert(depois.getDerrotasMD3() == antes.getDerrotasMD3());
+        assert(depois.getJogosGanhos() == antes.getJogosGanhos());
+        assert(depois.getJogosPerdidos() == antes.getJogosPerdidos());
+        assert(depois.saldoJogos() == antes.saldoJogos());
+    }
+    std::cout << "Map original e estatisticas preservados apos ordenar e alterar a copia.\n";
+    std::cout << "Todos os testes da etapa 6 passaram.\n";
     return 0;
 }

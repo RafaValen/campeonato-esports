@@ -22,7 +22,7 @@ Uma frase dizendo o que o sistema faz. A descrição completa está em
 
 ## Compilar e executar
 
-Na etapa 5, `src/*.cpp` inclui `src/Time.cpp`, `src/Partida.cpp`,
+Na etapa 6, `src/*.cpp` inclui `src/Time.cpp`, `src/Partida.cpp`,
 `src/Campeonato.cpp` e `src/main.cpp`.
 O executável mantém os testes anteriores com `assert` e acrescenta testes de
 cadastro, consulta e listagem de times: campeonato vazio, nomes inválidos,
@@ -37,6 +37,10 @@ participantes, a ordem de registro e a diferença entre time inexistente
 (`false`) e time cadastrado sem partidas (`true` com vetor vazio).
 Também conferem que o vetor de saída é substituído a cada consulta e que
 as consultas e alterações das cópias não modificam os dados do campeonato.
+Os testes de classificação usam `std::sort` com `Time::operator<` e verificam
+campeonato vazio, times sem partidas e cada critério na ordem: MD3 vencidas,
+saldo de jogos, jogos ganhos e nome normalizado. Também comparam o cadastro
+antes e depois da classificação e de alterações na cópia retornada.
 
 ```bash
 g++ -std=c++11 -Wall -Wextra src/*.cpp -Iinclude -o sistema
