@@ -22,33 +22,60 @@ Uma frase dizendo o que o sistema faz. A descrição completa está em
 
 ## Compilar e executar
 
-Na etapa 6, `src/*.cpp` inclui `src/Time.cpp`, `src/Partida.cpp`,
-`src/Campeonato.cpp` e `src/main.cpp`.
-O executável mantém os testes anteriores com `assert` e acrescenta testes de
-cadastro, consulta e listagem de times: campeonato vazio, nomes inválidos,
-duplicidade, remoção de espaços nas extremidades e comparação sem diferenciar
-maiúsculas e minúsculas de A a Z. Não há tratamento especial de acentos.
-Também testa o registro e a listagem de MD3, os quatro placares válidos,
-as estatísticas dos dois participantes e a rejeição de confrontos repetidos
-(nas duas ordens), times inexistentes, confronto consigo mesmo e placares
-inválidos, verificando que as recusas não alteram os dados.
-Os testes de histórico verificam a normalização do nome, a filtragem dos dois
-participantes, a ordem de registro e a diferença entre time inexistente
-(`false`) e time cadastrado sem partidas (`true` com vetor vazio).
-Também conferem que o vetor de saída é substituído a cada consulta e que
-as consultas e alterações das cópias não modificam os dados do campeonato.
-Os testes de classificação usam `std::sort` com `Time::operator<` e verificam
-campeonato vazio, times sem partidas e cada critério na ordem: MD3 vencidas,
-saldo de jogos, jogos ganhos e nome normalizado. Também comparam o cadastro
-antes e depois da classificação e de alterações na cópia retornada.
+O programa usa C++11 e somente a biblioteca padrão. `src/*.cpp` inclui as
+três classes, `src/Interface.cpp` e o ponto de entrada `src/main.cpp`.
+Os dados ficam somente na memória e são perdidos ao encerrar.
 
 ```bash
 g++ -std=c++11 -Wall -Wextra src/*.cpp -Iinclude -o sistema
 ./sistema
 ```
 
-Se o comando mudar, atualize esta seção. Na correção eu vou usar o que
-estiver escrito aqui.
+Menu: 1 cadastrar time, 2 listar times, 3 registrar MD3, 4 listar partidas,
+5 classificação, 6 histórico, 0 sair. Digite cada nome ou número em uma linha.
+No registro de MD3, informe os nomes A e B e depois os jogos ganhos por A e B
+separadamente (por exemplo, `2` e `1`, não `2x1`). Nomes aceitam espaços;
+a comparação ignora maiúsculas/minúsculas de A a Z e espaços nas extremidades,
+sem tratamento especial de acentos. Entradas numéricas inválidas permitem
+nova tentativa; fim da entrada encerra sem registrar uma MD3 incompleta.
+
+### Testes das classes
+
+Todos os testes das etapas 1 a 6 foram preservados em `tests/testes.cpp`.
+Compile separadamente, sem `src/main.cpp`, para não duplicar o ponto de entrada.
+Não use `-DNDEBUG`, pois os testes usam `assert`.
+
+```bash
+g++ -std=c++11 -Wall -Wextra tests/testes.cpp src/Time.cpp src/Partida.cpp src/Campeonato.cpp -Iinclude -o testes
+./testes
+```
+
+### Exemplos do menu
+
+- `exemplos/normal.txt`: todas as opções, Alpha 2x1 Beta, classificação,
+  histórico e time sem partidas; inclui nomes com espaços.
+- `exemplos/erros.txt`: listas vazias, nome inválido, duplicado, time
+  inexistente, mesmo time, placares inválidos, confronto invertido repetido,
+  opção inexistente, letras, número com sufixo e inteiro fora do alcance.
+- `exemplos/fim_entrada.txt`: fim da entrada no meio de uma MD3.
+
+No Bash ou Prompt de Comando, use redirecionamento:
+
+```bash
+./sistema < exemplos/normal.txt
+./sistema < exemplos/erros.txt
+./sistema < exemplos/fim_entrada.txt
+```
+
+No PowerShell do Windows:
+
+```powershell
+.\sistema.exe
+.\testes.exe
+cmd /c "sistema.exe < exemplos\normal.txt"
+cmd /c "sistema.exe < exemplos\erros.txt"
+cmd /c "sistema.exe < exemplos\fim_entrada.txt"
+```
 
 ## Onde uso a STL
 
