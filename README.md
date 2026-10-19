@@ -22,10 +22,16 @@ Uma frase dizendo o que o sistema faz. A descrição completa está em
 
 ## Compilar e executar
 
-Na etapa 2, `src/*.cpp` inclui `src/Time.cpp`, `src/Partida.cpp` e `src/main.cpp`.
-O executável mantém os testes da etapa 1 com `assert` e mostra as estatísticas
-de Alpha antes e depois de vencer uma MD3 por 2x1. Também testa as consultas
-de `Partida`, os participantes e os placares permitidos e inválidos.
+Na etapa 4, `src/*.cpp` inclui `src/Time.cpp`, `src/Partida.cpp`,
+`src/Campeonato.cpp` e `src/main.cpp`.
+O executável mantém os testes anteriores com `assert` e acrescenta testes de
+cadastro, consulta e listagem de times: campeonato vazio, nomes inválidos,
+duplicidade, remoção de espaços nas extremidades e comparação sem diferenciar
+maiúsculas e minúsculas de A a Z. Não há tratamento especial de acentos.
+Também testa o registro e a listagem de MD3, os quatro placares válidos,
+as estatísticas dos dois participantes e a rejeição de confrontos repetidos
+(nas duas ordens), times inexistentes, confronto consigo mesmo e placares
+inválidos, verificando que as recusas não alteram os dados.
 
 ```bash
 g++ -std=c++11 -Wall -Wextra src/*.cpp -Iinclude -o sistema
