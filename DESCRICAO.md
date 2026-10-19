@@ -1,4 +1,4 @@
-0# Descrição do sistema
+Descrição do sistema
 
 Escreva este arquivo sem IA, antes de qualquer código. Apague as instruções
 em itálico quando preencher.

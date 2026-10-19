@@ -85,12 +85,13 @@ Confronto já realizado.
 A interface transformará esses resultados em mensagens. Uma tentativa inválida não alterará estatísticas nem containers.
 
 3. Detalhes que precisam de confirmação
-A descrição não define completamente o tratamento dos nomes:
+**UPDATE :** Decisões adotadas para os nomes dos times :
 
-ÁGUIAS e águias devem ser considerados o mesmo nome? O tratamento de acentos não é simples e portátil em C++11.
-Espaços no começo e no fim devem ser removidos?
-Um nome vazio deve ser recusado?
-A estratégia exata de padronização ficará pendente dessas respostas, sem inventar novas regras.
+- Os espaços no início e no final dos nomes são removidos.
+- Nomes vazios ou compostos apenas por espaços são rejeitados.
+- Letras maiúsculas e minúsculas de A a Z são consideradas equivalentes na identificação dos times.
+- Espaços internos são preservados.
+- Não foi implementada normalização específica de caracteres acentuados.
 
 4. Etapas pequenas
 Cada etapa deverá terminar compilando com o comando do README.md:

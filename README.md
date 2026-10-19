@@ -1,4 +1,6 @@
-# Nome do sistema
+# Gerenciador de Campeonatos de Esports
+
+Sistema desenvolvido em C++11 para gerenciar um campeonato de esports com partidas MD3 (melhor de três). O programa permite cadastrar equipes, registrar resultados, consultar o histórico de partidas e visualizar a classificação do campeonato.
 
 Atividade da Unidade 2 de Linguagem de Programação I. Leia `ENUNCIADO.md`
 antes de começar.
@@ -81,10 +83,10 @@ cmd /c "sistema.exe < exemplos\fim_entrada.txt"
 
 No projeto, utilizei quatro ferramentas da STL:
 
-- **map:** para armazenar os times e acessar seus dados pesquisando pelo nome.
-- **set:** para garantir que não haja repetição de confrontos entre os mesmos times.
-- **vector:** para armazenar as partidas e organizar os dados usados nas consultas de histórico e classificação.
-- **sort:** para ordenar os times na classificação do campeonato, considerando as vitórias, o saldo de jogos e os critérios de desempate.
+- **map:** : Classe Campeonato , no cadastro e consulta ; Para armazenar os times e acessar seus dados pesquisando pelo nome.
+ - **set:**  Classe Campeonato, em registrarPartida() ; Para garantir que não haja repetição de confrontos entre os mesmos times.
+ - **vector:**  Classe Campeonato, em listarPartidas(), historicoTime() e classificacao() ; Para armazenar as partidas e organizar os dados usados nas consultas de histórico e classificação. 
+- **sort:** Método Campeonato::classificacao() ; Para ordenar os times na classificação do campeonato, considerando as vitórias, o saldo de jogos e os critérios de desempate.
 
 ## Como usei a IA
 
